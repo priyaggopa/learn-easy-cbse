@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 10 - Learn Easy CBSE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .nav-links {
+            margin-top: 15px;
+        }
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .subject-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        }
+        .subject-card.maths {
+            border-top: 5px solid #FF6B6B;
+        }
+        .subject-card.physics {
+            border-top: 5px solid #4ECDC4;
+        }
+        .subject-card.chemistry {
+            border-top: 5px solid #95E1D3;
+        }
+        .subject-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        .subject-card h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subject-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .subject-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+        .subject-link:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 10 - CBSE Learning Portal</h1>
+            <p>Select a subject to begin learning</p>
+            <div class="nav-links">
+                <a href="../index.html">← Home</a>
+            </div>
+        </header>
+        
+        <div class="subjects-grid">
+            <div class="subject-card maths">
+                <div class="subject-icon">📐</div>
+                <h2>Mathematics</h2>
+                <p>Algebra, Geometry, and Advanced Concepts</p>
+                <a href="maths.html" class="subject-link">Start Learning</a>
+            </div>
+            
+            <div class="subject-card physics">
+                <div class="subject-icon">⚡</div>
+                <h2>Physics</h2>
+                <p>Motion, Forces, and Energy</p>
+                <a href="physics.html" class="subject-link">Start Learning</a>
+            </div>
+            
+            <div class="subject-card chemistry">
+                <div class="subject-icon">🧪</div>
+                <h2>Chemistry</h2>
+                <p>Matter, Atoms, and Reactions</p>
+                <a href="chemistry.html" class="subject-link">Start Learning</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
