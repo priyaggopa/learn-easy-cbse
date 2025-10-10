@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 1 - Science Chapters</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .back-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .chapter-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+        .chapter-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .chapter-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .chapter-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .chapter-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .chapter-status {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .chapter-status.coming-soon {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        @media (max-width: 768px) {
+            .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Class 1</a>
+        
+        <div class="header">
+            <h1>🔬 Science</h1>
+            <p>Class 1 - Chapter List</p>
+        </div>
+        
+        <div class="chapter-grid">
+            <a href="science/chapter1.html" class="chapter-card">
+                <div class="chapter-number">1</div>
+                <div class="chapter-title">Living and Non-Living</div>
+                <div class="chapter-description">
+                    Discover the difference between living and non-living things around us with fun examples.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">2</div>
+                <div class="chapter-title">Plants Around Us</div>
+                <div class="chapter-description">
+                    Learn about different types of plants, their parts, and how they grow.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">3</div>
+                <div class="chapter-title">Animals</div>
+                <div class="chapter-description">
+                    Explore the amazing world of animals, their homes, and how they move.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">4</div>
+                <div class="chapter-title">Our Body</div>
+                <div class="chapter-description">
+                    Understand the different parts of our body and how they help us every day.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">5</div>
+                <div class="chapter-title">Our Senses</div>
+                <div class="chapter-description">
+                    Learn about the five senses and how we use them to explore the world.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">6</div>
+                <div class="chapter-title">Food We Eat</div>
+                <div class="chapter-description">
+                    Discover different types of food, where they come from, and why we need them.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
