@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1: Numbers - Class 1 Maths</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        .back-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .back-link:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        .section {
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #d63031;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        .section p {
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .number-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .number-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .number-card .num {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .number-card .word {
+            font-size: 1.2em;
+            color: #333;
+            font-weight: bold;
+        }
+        .fun-fact {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .fun-fact h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+        .emoji {
+            font-size: 2em;
+            margin: 0 5px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .number-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../maths.html" class="back-link">← Back to Chapters</a>
+        
+        <h1>Chapter 1: Numbers <span class="emoji">🔢</span></h1>
+        <p class="subtitle">Let's learn about wonderful numbers!</p>
+        
+        <div class="section">
+            <h2>What are Numbers? <span class="emoji">🤔</span></h2>
+            <p>Numbers are special symbols we use to count things! Just like we have letters to make words, we have numbers to count and measure.</p>
+            <p>Numbers help us answer questions like: How many toys do you have? How old are you? How many friends are playing with you?</p>
+        </div>
+        
+        <div class="section">
+            <h2>Let's Count from 1 to 10! <span class="emoji">🎉</span></h2>
+            <div class="number-grid">
+                <div class="number-card">
+                    <div class="num">1</div>
+                    <div class="word">One</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">2</div>
+                    <div class="word">Two</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">3</div>
+                    <div class="word">Three</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">4</div>
+                    <div class="word">Four</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">5</div>
+                    <div class="word">Five</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">6</div>
+                    <div class="word">Six</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">7</div>
+                    <div class="word">Seven</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">8</div>
+                    <div class="word">Eight</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">9</div>
+                    <div class="word">Nine</div>
+                </div>
+                <div class="number-card">
+                    <div class="num">10</div>
+                    <div class="word">Ten</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="fun-fact">
+            <h3>Fun Fact! <span class="emoji">⭐</span></h3>
+            <p>Did you know? The number ZERO (0) is very special! It means "nothing" or "none". If you have zero cookies, it means you have no cookies! <span class="emoji">🍪</span></p>
+        </div>
+        
+        <div class="section">
+            <h2>Practice Time! <span class="emoji">✏️</span></h2>
+            <p><strong>Count these objects:</strong></p>
+            <p>🍎 - How many apples? (1 apple!)</p>
+            <p>⭐⭐ - How many stars? (2 stars!)</p>
+            <p>🎈🎈🎈 - How many balloons? (3 balloons!)</p>
+            <p>🌸🌸🌸🌸 - How many flowers? (4 flowers!)</p>
+            <p>🚗🚗🚗🚗🚗 - How many cars? (5 cars!)</p>
+        </div>
+        
+        <div class="fun-fact">
+            <h3>Remember! <span class="emoji">💡</span></h3>
+            <p>Numbers are everywhere! You can find them on clocks, phones, books, and even on your birthday cake with candles! Keep practicing counting every day!</p>
+        </div>
+    </div>
+</body>
+</html>
