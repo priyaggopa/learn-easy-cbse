@@ -5,112 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class 1 - Mathematics Chapters</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        h1 {
-            color: #2c3e50;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
             text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
         .back-link {
             display: inline-block;
-            margin-bottom: 20px;
-            color: #3498db;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            color: white;
             text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
         }
         .back-link:hover {
-            text-decoration: underline;
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .chapter-list {
-            list-style: none;
-            padding: 0;
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
-        .chapter-item {
-            background-color: white;
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+        .chapter-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
         }
-        .chapter-item:hover {
-            transform: translateX(10px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        .chapter-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
         .chapter-number {
-            color: #e74c3c;
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 1.2em;
+            margin-bottom: 15px;
         }
         .chapter-title {
+            font-size: 1.5em;
             color: #2c3e50;
-            font-size: 16px;
-            margin-left: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .chapter-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .chapter-status {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .chapter-status.coming-soon {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        @media (max-width: 768px) {
+            .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">← Back to Subject Selection</a>
-    <h1>Class 1 - Mathematics</h1>
-    <h2 style="text-align: center; color: #7f8c8d;">Chapter List</h2>
-    
-    <ul class="chapter-list">
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 1:</span>
-            <span class="chapter-title">Shapes and Space</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 2:</span>
-            <span class="chapter-title">Numbers from One to Nine</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 3:</span>
-            <span class="chapter-title">Addition</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 4:</span>
-            <span class="chapter-title">Subtraction</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 5:</span>
-            <span class="chapter-title">Numbers from Ten to Twenty</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 6:</span>
-            <span class="chapter-title">Time</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 7:</span>
-            <span class="chapter-title">Measurement</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 8:</span>
-            <span class="chapter-title">Numbers from Twenty-one to Fifty</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 9:</span>
-            <span class="chapter-title">Data Handling</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 10:</span>
-            <span class="chapter-title">Patterns</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 11:</span>
-            <span class="chapter-title">Numbers</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 12:</span>
-            <span class="chapter-title">Money</span>
-        </li>
-        <li class="chapter-item">
-            <span class="chapter-number">Chapter 13:</span>
-            <span class="chapter-title">How Many?</span>
-        </li>
-    </ul>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Class 1</a>
+        
+        <div class="header">
+            <h1>📐 Mathematics</h1>
+            <p>Class 1 - Chapter List</p>
+        </div>
+        
+        <div class="chapter-grid">
+            <a href="maths/chapter1.html" class="chapter-card">
+                <div class="chapter-number">1</div>
+                <div class="chapter-title">Numbers</div>
+                <div class="chapter-description">
+                    Learn about numbers from 1 to 10, counting objects, and understanding zero. Fun activities included!
+                </div>
+                <span class="chapter-status">Available</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">2</div>
+                <div class="chapter-title">Addition</div>
+                <div class="chapter-description">
+                    Discover how to add numbers together and solve simple addition problems with colorful examples.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">3</div>
+                <div class="chapter-title">Subtraction</div>
+                <div class="chapter-description">
+                    Learn to subtract numbers and understand the concept of taking away with fun illustrations.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">4</div>
+                <div class="chapter-title">Shapes</div>
+                <div class="chapter-description">
+                    Explore basic shapes like circles, squares, triangles, and rectangles with interactive examples.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">5</div>
+                <div class="chapter-title">Measurement</div>
+                <div class="chapter-description">
+                    Understand basic concepts of length, weight, and capacity through everyday objects.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+            
+            <a href="#" class="chapter-card">
+                <div class="chapter-number">6</div>
+                <div class="chapter-title">Time</div>
+                <div class="chapter-description">
+                    Learn to read clocks, understand hours and minutes, and organize daily activities.
+                </div>
+                <span class="chapter-status coming-soon">Coming Soon</span>
+            </a>
+        </div>
+    </div>
 </body>
 </html>
