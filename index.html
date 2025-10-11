@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -18,7 +17,6 @@
             color: #333;
             min-height: 100vh;
         }
-
         .header {
             background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
             padding: 2rem;
@@ -26,7 +24,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             animation: slideDown 0.5s ease-out;
         }
-
         @keyframes slideDown {
             from {
                 transform: translateY(-100%);
@@ -37,26 +34,22 @@
                 opacity: 1;
             }
         }
-
         h1 {
             color: white;
             font-size: 3rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             margin-bottom: 0.5rem;
         }
-
         .tagline {
             color: #e0f7fa;
             font-size: 1.2rem;
             font-style: italic;
         }
-
         .container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
-
         .intro {
             background: white;
             border-radius: 20px;
@@ -66,7 +59,6 @@
             text-align: center;
             animation: fadeIn 0.8s ease-in;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -77,26 +69,22 @@
                 transform: scale(1);
             }
         }
-
         .intro h2 {
             color: #11998e;
             font-size: 2rem;
             margin-bottom: 1rem;
         }
-
         .intro p {
             color: #555;
             font-size: 1.1rem;
             line-height: 1.8;
         }
-
         .classes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-
         .class-card {
             background: white;
             border-radius: 20px;
@@ -110,7 +98,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .class-card::before {
             content: '';
             position: absolute;
@@ -120,30 +107,25 @@
             height: 8px;
             background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
         }
-
         .class-card:hover {
             transform: translateY(-10px) scale(1.05);
             box-shadow: 0 15px 35px rgba(17, 153, 142, 0.4);
         }
-
         .class-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
         }
-
         .class-title {
             color: #11998e;
             font-size: 2rem;
             margin-bottom: 0.5rem;
             font-weight: bold;
         }
-
         .class-description {
             color: #666;
             font-size: 1rem;
             margin-bottom: 1rem;
         }
-
         .class-badge {
             display: inline-block;
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
@@ -153,7 +135,6 @@
             font-weight: bold;
             font-size: 0.9rem;
         }
-
         .footer {
             background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
             color: white;
@@ -162,16 +143,13 @@
             margin-top: 3rem;
             box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
         }
-
         .footer p {
             font-size: 1.1rem;
         }
-
         .emoji {
             display: inline-block;
             animation: bounce 2s infinite;
         }
-
         @keyframes bounce {
             0%, 100% {
                 transform: translateY(0);
@@ -180,17 +158,14 @@
                 transform: translateY(-10px);
             }
         }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
             }
-
             .intro h2 {
                 font-size: 1.5rem;
             }
-
             .classes-grid {
                 grid-template-columns: 1fr;
             }
@@ -202,92 +177,79 @@
         <h1><span class="emoji">📚</span> Learn Easy CBSE <span class="emoji">🎓</span></h1>
         <p class="tagline">Making Learning Fun and Easy for Every Student!</p>
     </div>
-
     <div class="container">
         <div class="intro">
             <h2>Welcome to Your Learning Journey! 🌟</h2>
             <p>Choose your class below and start exploring amazing lessons, fun activities, and helpful resources designed just for you!</p>
         </div>
-
         <div class="classes-grid">
-            <a href="class1.html" class="class-card">
+            <a href="class1/" class="class-card">
                 <div class="class-icon">🎈</div>
                 <h3 class="class-title">Class 1</h3>
                 <p class="class-description">Start your learning adventure!</p>
                 <span class="class-badge">Begin Here</span>
             </a>
-
-            <a href="class2.html" class="class-card">
+            <a href="class2/" class="class-card">
                 <div class="class-icon">🌈</div>
                 <h3 class="class-title">Class 2</h3>
                 <p class="class-description">Discover new and exciting things!</p>
                 <span class="class-badge">Explore</span>
             </a>
-
-            <a href="class3.html" class="class-card">
+            <a href="class3/" class="class-card">
                 <div class="class-icon">🎨</div>
                 <h3 class="class-title">Class 3</h3>
                 <p class="class-description">Get creative with learning!</p>
                 <span class="class-badge">Create</span>
             </a>
-
-            <a href="class4.html" class="class-card">
+            <a href="class4/" class="class-card">
                 <div class="class-icon">🚀</div>
                 <h3 class="class-title">Class 4</h3>
                 <p class="class-description">Blast off to new knowledge!</p>
                 <span class="class-badge">Launch</span>
             </a>
-
-            <a href="class5.html" class="class-card">
+            <a href="class5/" class="class-card">
                 <div class="class-icon">🌟</div>
                 <h3 class="class-title">Class 5</h3>
                 <p class="class-description">Shine bright in your studies!</p>
                 <span class="class-badge">Shine</span>
             </a>
-
-            <a href="class6.html" class="class-card">
+            <a href="class6/" class="class-card">
                 <div class="class-icon">🎯</div>
                 <h3 class="class-title">Class 6</h3>
                 <p class="class-description">Hit your learning targets!</p>
                 <span class="class-badge">Achieve</span>
             </a>
-
-            <a href="class7.html" class="class-card">
+            <a href="class7/" class="class-card">
                 <div class="class-icon">🏆</div>
                 <h3 class="class-title">Class 7</h3>
                 <p class="class-description">Champion your education!</p>
                 <span class="class-badge">Excel</span>
             </a>
-
-            <a href="class8.html" class="class-card">
+            <a href="class8/" class="class-card">
                 <div class="class-icon">💡</div>
                 <h3 class="class-title">Class 8</h3>
                 <p class="class-description">Brighten your understanding!</p>
                 <span class="class-badge">Illuminate</span>
             </a>
-
-            <a href="class9.html" class="class-card">
+            <a href="class9/" class="class-card">
                 <div class="class-icon">🔬</div>
                 <h3 class="class-title">Class 9</h3>
                 <p class="class-description">Explore deeper concepts!</p>
                 <span class="class-badge">Discover</span>
             </a>
-
-            <a href="class10.html" class="class-card">
+            <a href="class10/" class="class-card">
                 <div class="class-icon">🎓</div>
                 <h3 class="class-title">Class 10</h3>
                 <p class="class-description">Master your board exams!</p>
                 <span class="class-badge">Master</span>
             </a>
-
-            <a href="class11.html" class="class-card">
+            <a href="class11/" class="class-card">
                 <div class="class-icon">📖</div>
                 <h3 class="class-title">Class 11</h3>
                 <p class="class-description">Advance your knowledge!</p>
                 <span class="class-badge">Advance</span>
             </a>
-
-            <a href="class12.html" class="class-card">
+            <a href="class12/" class="class-card">
                 <div class="class-icon">🌠</div>
                 <h3 class="class-title">Class 12</h3>
                 <p class="class-description">Reach for the stars!</p>
@@ -295,7 +257,6 @@
             </a>
         </div>
     </div>
-
     <div class="footer">
         <p>© 2025 Learn Easy CBSE | Happy Learning! 😊</p>
         <p>Made with ❤️ for Students</p>
