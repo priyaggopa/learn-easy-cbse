@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: Patterns – Class 1 Maths</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6f0 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #ff6b9d;
+            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(255,107,157,0.3);
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #4a90e2;
+            font-size: 1.8em;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #9b59b6;
+            font-size: 1.4em;
+            margin-top: 25px;
+        }
+        .intro {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin: 20px 0;
+            border: 3px dashed #ff6b9d;
+        }
+        .pattern-box {
+            background: #f9f9f9;
+            border: 3px solid #4a90e2;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .pattern-example {
+            font-size: 2.5em;
+            text-align: center;
+            margin: 15px 0;
+            letter-spacing: 10px;
+        }
+        .color-pattern {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .color-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            border: 3px solid #333;
+        }
+        .shape-pattern {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .shape {
+            width: 70px;
+            height: 70px;
+            border: 3px solid #333;
+        }
+        .circle { border-radius: 50%; }
+        .square { border-radius: 0; }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 70px solid;
+            border-radius: 0;
+        }
+        .practice-section {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 4px solid #e17055;
+        }
+        .practice-item {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #74b9ff;
+        }
+        .pattern-line {
+            font-size: 2em;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .blank {
+            display: inline-block;
+            width: 60px;
+            height: 40px;
+            background: white;
+            border: 2px dashed #ff6b9d;
+            border-radius: 5px;
+            vertical-align: middle;
+        }
+        .video-container {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            border: 3px solid #4caf50;
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .emoji {
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Chapter 6: Patterns 🎨</h1>
+        <h2>Class 1 Maths</h2>
+        
+        <div class="intro">
+            <p><span class="emoji">🌟</span> <strong>Welcome to the wonderful world of patterns!</strong> <span class="emoji">🌟</span></p>
+            <p>A <strong>pattern</strong> is something that repeats again and again. Patterns are all around us! We can see patterns in numbers, colors, shapes, and even in nature. Learning patterns helps us understand the world better and makes math fun!</p>
+            <p><span class="emoji">👀</span> Let's explore different types of patterns together!</p>
+        </div>
+
+        <h2>🔢 Types of Patterns</h2>
+
+        <h3>1. Number Patterns</h3>
+        <div class="pattern-box">
+            <p><strong>Number patterns</strong> are numbers that follow a rule and repeat.</p>
+            
+            <p><strong>Example 1:</strong> Counting by 1s</p>
+            <div class="pattern-example">1, 2, 3, 4, 5, 6, 7, 8...</div>
+            
+            <p><strong>Example 2:</strong> Counting by 2s</p>
+            <div class="pattern-example">2, 4, 6, 8, 10...</div>
+            
+            <p><strong>Example 3:</strong> Repeating pattern</p>
+            <div class="pattern-example">1, 2, 1, 2, 1, 2...</div>
+        </div>
+
+        <h3>2. Color Patterns</h3>
+        <div class="pattern-box">
+            <p><strong>Color patterns</strong> use different colors that repeat in order.</p>
+            
+            <p><strong>Example 1:</strong> Red, Blue, Red, Blue...</p>
+            <div class="color-pattern">
+                <div class="color-box" style="background-color: #ff6b6b;"></div>
+                <div class="color-box" style="background-color: #4ecdc4;"></div>
+                <div class="color-box" style="background-color: #ff6b6b;"></div>
+                <div class="color-box" style="background-color: #4ecdc4;"></div>
+                <div class="color-box" style="background-color: #ff6b6b;"></div>
+            </div>
+            
+            <p><strong>Example 2:</strong> Yellow, Green, Purple, Yellow, Green, Purple...</p>
+            <div class="color-pattern">
+                <div class="color-box" style="background-color: #ffd93d;"></div>
+                <div class="color-box" style="background-color: #6bcf7f;"></div>
+                <div class="color-box" style="background-color: #a29bfe;"></div>
+                <div class="color-box" style="background-color: #ffd93d;"></div>
+                <div class="color-box" style="background-color: #6bcf7f;"></div>
+                <div class="color-box" style="background-color: #a29bfe;"></div>
+            </div>
+        </div>
+
+        <h3>3. Shape Patterns</h3>
+        <div class="pattern-box">
+            <p><strong>Shape patterns</strong> use different shapes that repeat in order.</p>
+            
+            <p><strong>Example 1:</strong> Circle, Square, Circle, Square...</p>
+            <div class="shape-pattern">
+                <div class="shape circle" style="background-color: #ff9ff3;"></div>
+                <div class="shape square" style="background-color: #54a0ff;"></div>
+                <div class="shape circle" style="background-color: #ff9ff3;"></div>
+                <div class="shape square" style="background-color: #54a0ff;"></div>
+                <div class="shape circle" style="background-color: #ff9ff3;"></div>
+            </div>
+            
+            <p><strong>Example 2:</strong> Triangle, Circle, Square, Triangle, Circle, Square...</p>
+            <div class="shape-pattern">
+                <div class="triangle" style="border-bottom-color: #48dbfb;"></div>
+                <div class="shape circle" style="background-color: #ff6348;"></div>
+                <div class="shape square" style="background-color: #feca57;"></div>
+                <div class="triangle" style="border-bottom-color: #48dbfb;"></div>
+                <div class="shape circle" style="background-color: #ff6348;"></div>
+                <div class="shape square" style="background-color: #feca57;"></div>
+            </div>
+        </div>
+
+        <div class="practice-section">
+            <h2>✏️ Practice Time! ✏️</h2>
+            <p><strong>Can you complete these patterns?</strong> Think about what comes next!</p>
+
+            <div class="practice-item">
+                <p><strong>Question 1:</strong> Complete the number pattern:</p>
+                <div class="pattern-line">1, 2, 3, 4, <span class="blank"></span>, 6, 7</div>
+            </div>
+
+            <div class="practice-item">
+                <p><strong>Question 2:</strong> What comes next?</p>
+                <div class="pattern-line">5, 10, 15, 20, <span class="blank"></span></div>
+            </div>
+
+            <div class="practice-item">
+                <p><strong>Question 3:</strong> Complete the pattern:</p>
+                <div class="pattern-line">🔴 🔵 🔴 🔵 <span class="blank"></span></div>
+            </div>
+
+            <div class="practice-item">
+                <p><strong>Question 4:</strong> What shape comes next?</p>
+                <div class="pattern-line">⭐ ⬜ ⭐ ⬜ <span class="blank"></span></div>
+            </div>
+
+            <div class="practice-item">
+                <p><strong>Question 5:</strong> Complete this pattern:</p>
+                <div class="pattern-line">A, B, C, A, B, <span class="blank"></span></div>
+            </div>
+        </div>
+
+        <div class="video-container">
+            <h2>🎥 Watch and Learn! 🎥</h2>
+            <p>Watch this fun video to learn more about patterns!</p>
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="Fun Patterns Video for Kids" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <p><small>📝 <em>Note: This is a placeholder video. You can replace the video ID in the embed URL with your preferred educational patterns video.</em></small></p>
+        </div>
+
+        <div class="intro">
+            <h3>🎉 Great Job! 🎉</h3>
+            <p>Now you know all about patterns! Remember to look for patterns everywhere - in your clothes, toys, books, and nature. Patterns make the world beautiful and help us learn!</p>
+            <p><strong>Keep practicing and have fun with patterns! 🌈</strong></p>
+        </div>
+    </div>
+</body>
+</html>
