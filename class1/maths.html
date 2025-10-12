@@ -34,111 +34,65 @@
             font-size: 1.2em;
             opacity: 0.9;
         }
-        .back-link {
-            display: inline-block;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            margin-bottom: 30px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .back-link:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
         .chapter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
-            margin-top: 30px;
+            margin-bottom: 30px;
         }
         .chapter-card {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: all 0.3s;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: block;
-            position: relative;
-            overflow: hidden;
-        }
-        .chapter-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
         }
         .chapter-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
         }
         .chapter-number {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 50px;
+            font-size: 2.5em;
             font-weight: bold;
-            font-size: 1.2em;
-            margin-bottom: 15px;
+            color: #667eea;
+            margin-bottom: 10px;
         }
         .chapter-title {
             font-size: 1.5em;
-            color: #2c3e50;
+            color: #333;
             margin-bottom: 10px;
-            font-weight: bold;
+            font-weight: 600;
         }
         .chapter-description {
-            color: #7f8c8d;
-            line-height: 1.6;
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
             margin-bottom: 15px;
         }
         .chapter-status {
             display: inline-block;
             padding: 5px 15px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-radius: 15px;
+            border-radius: 20px;
             font-size: 0.85em;
             font-weight: 600;
+            background: #4caf50;
+            color: white;
         }
         .chapter-status.coming-soon {
-            background: #fff3e0;
-            color: #e65100;
-        }
-        @media (max-width: 768px) {
-            .chapter-grid {
-                grid-template-columns: 1fr;
-            }
-            .header h1 {
-                font-size: 2em;
-            }
+            background: #ff9800;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-link">← Back to Class 1</a>
-        
         <div class="header">
-            <h1>📐 Mathematics</h1>
-            <p>Class 1 - Chapter List</p>
+            <h1>📚 Class 1 Mathematics</h1>
+            <p>Let's learn Math together - it's fun!</p>
         </div>
-        
         <div class="chapter-grid">
             <a href="maths/chapter1.html" class="chapter-card">
                 <div class="chapter-number">1</div>
@@ -149,40 +103,40 @@
                 <span class="chapter-status">Available</span>
             </a>
             
-            <a href="#" class="chapter-card">
+            <a href="maths/chapter2.html" class="chapter-card">
                 <div class="chapter-number">2</div>
                 <div class="chapter-title">Addition</div>
                 <div class="chapter-description">
                     Discover how to add numbers together and solve simple addition problems with colorful examples.
                 </div>
-                <span class="chapter-status coming-soon">Coming Soon</span>
+                <span class="chapter-status">Available</span>
             </a>
             
-            <a href="#" class="chapter-card">
+            <a href="maths/chapter3.html" class="chapter-card">
                 <div class="chapter-number">3</div>
                 <div class="chapter-title">Subtraction</div>
                 <div class="chapter-description">
                     Learn to subtract numbers and understand the concept of taking away with fun illustrations.
                 </div>
-                <span class="chapter-status coming-soon">Coming Soon</span>
+                <span class="chapter-status">Available</span>
             </a>
             
-            <a href="#" class="chapter-card">
+            <a href="maths/chapter4.html" class="chapter-card">
                 <div class="chapter-number">4</div>
                 <div class="chapter-title">Shapes</div>
                 <div class="chapter-description">
                     Explore basic shapes like circles, squares, triangles, and rectangles with interactive examples.
                 </div>
-                <span class="chapter-status coming-soon">Coming Soon</span>
+                <span class="chapter-status">Available</span>
             </a>
             
-            <a href="#" class="chapter-card">
+            <a href="maths/chapter5.html" class="chapter-card">
                 <div class="chapter-number">5</div>
                 <div class="chapter-title">Measurement</div>
                 <div class="chapter-description">
                     Understand basic concepts of length, weight, and capacity through everyday objects.
                 </div>
-                <span class="chapter-status coming-soon">Coming Soon</span>
+                <span class="chapter-status">Available</span>
             </a>
             
             <a href="#" class="chapter-card">
