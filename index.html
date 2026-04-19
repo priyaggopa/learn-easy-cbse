@@ -1,192 +1,362 @@
-{
-    "apiVersion": 1,
-    "groups": [
-        {
-            "orgId": 1,
-            "name": "1m_COP_API",
-            "folder": "000005v-Backups \\/ Drafts",
-            "interval": "1m",
-            "rules": [
-                {
-                    "uid": "ffj5i433b4pa8d",
-                    "title": "Shard Size (DUMMY)",
-                    "condition": "C",
-                    "data": [
-                        {
-                            "refId": "A",
-                            "relativeTimeRange": {
-                                "from": 900,
-                                "to": 0
-                            },
-                            "datasourceUid": "Infinity-Prod-GF-ESLogs2-O",
-                            "model": {
-                                "columns": [
-                                    {
-                                        "selector": "timestamp",
-                                        "text": "",
-                                        "type": "timestamp_epoch"
-                                    },
-                                    {
-                                        "selector": "val",
-                                        "text": "",
-                                        "type": "number"
-                                    },
-                                    {
-                                        "selector": "index",
-                                        "text": "",
-                                        "type": "string"
-                                    },
-                                    {
-                                        "selector": "shard",
-                                        "text": "",
-                                        "type": "string"
-                                    },
-                                    {
-                                        "selector": "prirep",
-                                        "text": "",
-                                        "type": "string"
-                                    },
-                                    {
-                                        "selector": "state",
-                                        "text": "",
-                                        "type": "string"
-                                    },
-                                    {
-                                        "selector": "node",
-                                        "text": "",
-                                        "type": "string"
-                                    }
-                                ],
-                                "computed_columns": [],
-                                "datasource": {
-                                    "type": "yesoreyeram-infinity-datasource",
-                                    "uid": "Infinity-Prod-GF-ESLogs2-O"
-                                },
-                                "filterExpression": "",
-                                "filters": [],
-                                "format": "table",
-                                "global_query_id": "",
-                                "instant": false,
-                                "intervalMs": 1000,
-                                "maxDataPoints": 43200,
-                                "pagination_mode": "none",
-                                "parser": "backend",
-                                "range": true,
-                                "refId": "A",
-                                "root_selector": "$map($, function($v) {\n{\n\"index\": $string($v.index),\n\"shard\": $string($v.shard),\n\"prirep\": $string($v.prirep),\n\"state\": $string($v.state),\n\"node\": $string($v.node),\n\"val\": $number($v.store),\n\"timestamp\":$floor($millis() / 1000)\n}\n})",
-                                "source": "url",
-                                "summarizeExpression": "",
-                                "type": "json",
-                                "url": "<es_endpoint>/_cat/shards/.d*?format=json&h=index,shard,prirep,state,store,node&bytes=b",
-                                "url_options": {
-                                    "body_content_type": "",
-                                    "body_graphql_query": "",
-                                    "body_graphql_variables": "",
-                                    "body_type": "",
-                                    "data": "",
-                                    "method": "GET"
-                                }
-                            }
-                        },
-                        {
-                            "refId": "B",
-                            "relativeTimeRange": {
-                                "from": 0,
-                                "to": 0
-                            },
-                            "datasourceUid": "__expr__",
-                            "model": {
-                                "conditions": [
-                                    {
-                                        "evaluator": {
-                                            "params": [],
-                                            "type": "gt"
-                                        },
-                                        "operator": {
-                                            "type": "and"
-                                        },
-                                        "query": {
-                                            "params": [
-                                                "B"
-                                            ]
-                                        },
-                                        "reducer": {
-                                            "params": [],
-                                            "type": "last"
-                                        },
-                                        "type": "query"
-                                    }
-                                ],
-                                "datasource": {
-                                    "type": "__expr__",
-                                    "uid": "__expr__"
-                                },
-                                "expression": "A",
-                                "intervalMs": 1000,
-                                "maxDataPoints": 43200,
-                                "reducer": "last",
-                                "refId": "B",
-                                "type": "reduce"
-                            }
-                        },
-                        {
-                            "refId": "C",
-                            "relativeTimeRange": {
-                                "from": 0,
-                                "to": 0
-                            },
-                            "datasourceUid": "__expr__",
-                            "model": {
-                                "conditions": [
-                                    {
-                                        "evaluator": {
-                                            "params": [
-                                                50
-                                            ],
-                                            "type": "gt"
-                                        },
-                                        "operator": {
-                                            "type": "and"
-                                        },
-                                        "query": {
-                                            "params": [
-                                                "C"
-                                            ]
-                                        },
-                                        "reducer": {
-                                            "params": [],
-                                            "type": "last"
-                                        },
-                                        "type": "query"
-                                    }
-                                ],
-                                "datasource": {
-                                    "type": "__expr__",
-                                    "uid": "__expr__"
-                                },
-                                "expression": "B",
-                                "intervalMs": 1000,
-                                "maxDataPoints": 43200,
-                                "refId": "C",
-                                "type": "threshold"
-                            }
-                        }
-                    ],
-                    "dashboardUid": "elastic_direct_api_health_check_gf",
-                    "panelId": 69,
-                    "noDataState": "NoData",
-                    "execErrState": "Error",
-                    "annotations": {
-                        "__dashboardUid__": "elastic_direct_api_health_check_gf",
-                        "__panelId__": "69"
-                    },
-                    "labels": {},
-                    "isPaused": true,
-                    "notification_settings": {
-                        "receiver": "DUMMY"
-                    }
-                }
-            ]
-        }
-    ]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Markets — Live Indices Dashboard</title>
+<meta name="description" content="Live 24/7 global stock market indices — S&P 500, NASDAQ, FTSE 100, Nikkei, Sensex and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07080a; --bg2: #0d0f12; --bg3: #12151a;
+    --border: rgba(255,255,255,0.06); --border2: rgba(255,255,255,0.12);
+    --text: #f0f2f5; --muted: #6b7280; --accent: #00d4aa; --accent2: #0ea5e9;
+    --green: #22c55e; --red: #ef4444; --amber: #f59e0b;
+    --green-bg: rgba(34,197,94,0.08); --red-bg: rgba(239,68,68,0.08);
+    --font: 'Syne', sans-serif; --mono: 'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+  body::after { content: ''; position: fixed; top: -30vh; left: 50%; transform: translateX(-50%); width: 80vw; height: 60vh; background: radial-gradient(ellipse, rgba(0,212,170,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+  .wrapper { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 28px 0 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-mark { width: 34px; height: 34px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #07080a; }
+  .logo-text { font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .logo-sub { font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; font-family: var(--mono); }
+  .header-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .live-badge { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .refresh-info { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .ticker-wrap { background: var(--bg2); border-bottom: 1px solid var(--border); overflow: hidden; height: 36px; display: flex; align-items: center; }
+  .ticker-track { display: flex; white-space: nowrap; animation: ticker 60s linear infinite; }
+  .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+  @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .ticker-item { display: inline-flex; align-items: center; gap: 8px; padding: 0 28px; font-family: var(--mono); font-size: 11.5px; border-right: 1px solid var(--border); height: 36px; }
+  .ticker-name { color: var(--muted); } .ticker-price { color: var(--text); font-weight: 500; }
+  .ticker-change.up { color: var(--green); } .ticker-change.dn { color: var(--red); }
+  .hero-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); position: relative; z-index: 1; }
+  .hero-stat { background: var(--bg); padding: 20px 24px; transition: background 0.2s; }
+  .hero-stat:hover { background: var(--bg2); }
+  .stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .stat-value { font-size: 22px; font-weight: 800; color: var(--text); font-family: var(--mono); }
+  .stat-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .stat-value.green { color: var(--green); } .stat-value.red { color: var(--red); }
+  main { padding: 32px 0 60px; }
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px; }
+  .section-title { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-family: var(--mono); }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .indices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 40px; }
+  .index-card { background: var(--bg2); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; transition: background 0.2s; position: relative; overflow: hidden; }
+  .index-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .index-card.up::before { background: var(--green); } .index-card.dn::before { background: var(--red); }
+  .index-card:hover { background: var(--bg3); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .card-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .card-exchange { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; }
+  .card-status { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0; }
+  .card-status.open { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+  .card-status.closed { background: rgba(107,114,128,0.12); color: var(--muted); border: 1px solid rgba(107,114,128,0.2); }
+  .card-status.pre { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+  .card-price-row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .card-price { font-family: var(--mono); font-size: 26px; font-weight: 500; color: var(--text); letter-spacing: -0.02em; }
+  .card-change { display: flex; align-items: center; gap: 6px; }
+  .card-change-val { font-family: var(--mono); font-size: 14px; font-weight: 500; }
+  .card-change-pct { font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+  .up .card-change-val { color: var(--green); } .up .card-change-pct { background: var(--green-bg); color: var(--green); }
+  .dn .card-change-val { color: var(--red); } .dn .card-change-pct { background: var(--red-bg); color: var(--red); }
+  .card-footer { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 10px; border-top: 1px solid var(--border); }
+  .sparkline-wrap { height: 40px; }
+  .sparkline-wrap canvas { width: 100%; height: 100%; }
+  .clocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 40px; }
+  .clock-cell { background: var(--bg2); padding: 16px 18px; text-align: center; transition: background 0.2s; }
+  .clock-cell:hover { background: var(--bg3); }
+  .clock-city { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .clock-time { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--text); letter-spacing: -0.02em; }
+  .clock-date { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .clock-open { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; padding: 2px 6px; border-radius: 3px; display: inline-block; }
+  .clock-open.open { background: var(--green-bg); color: var(--green); }
+  .clock-open.closed { color: var(--muted); }
+  .skeleton { display: inline-block; background: linear-gradient(90deg, var(--bg3) 25%, rgba(255,255,255,0.04) 50%, var(--bg3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  footer { border-top: 1px solid var(--border); padding: 24px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-note { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .footer-disclaimer { font-family: var(--mono); font-size: 10px; color: rgba(107,114,128,0.6); max-width: 500px; line-height: 1.6; text-align: right; }
+  @media (max-width: 640px) { .indices-grid { grid-template-columns: 1fr; } .clocks-grid { grid-template-columns: repeat(3, 1fr); } .card-price { font-size: 20px; } .footer-disclaimer { text-align: left; } }
+  .fade-in { animation: fadeIn 0.4s ease forwards; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <header>
+    <div class="logo">
+      <div class="logo-mark">M</div>
+      <div>
+        <div class="logo-text">MarketPulse</div>
+        <div class="logo-sub">Global Indices · 24/7 Live</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="live-badge"><div class="live-dot"></div><span id="last-updated">Connecting...</span></div>
+      <div class="refresh-info">Auto-refresh: <span id="countdown">30</span>s</div>
+    </div>
+  </header>
+</div>
+
+<div class="ticker-wrap"><div class="ticker-track" id="ticker-track"></div></div>
+
+<div class="hero-stats">
+  <div class="hero-stat"><div class="stat-label">Markets Open</div><div class="stat-value" id="stat-open">—</div><div class="stat-sub">of 11 exchanges</div></div>
+  <div class="hero-stat"><div class="stat-label">Gainers</div><div class="stat-value green" id="stat-gainers">—</div><div class="stat-sub">indices up today</div></div>
+  <div class="hero-stat"><div class="stat-label">Decliners</div><div class="stat-value red" id="stat-decliners">—</div><div class="stat-sub">indices down today</div></div>
+  <div class="hero-stat"><div class="stat-label">Best Performer</div><div class="stat-value green" id="stat-best" style="font-size:16px;">—</div><div class="stat-sub" id="stat-best-pct">—</div></div>
+  <div class="hero-stat"><div class="stat-label">Worst Performer</div><div class="stat-value red" id="stat-worst" style="font-size:16px;">—</div><div class="stat-sub" id="stat-worst-pct">—</div></div>
+</div>
+
+<div class="wrapper">
+<main>
+  <div class="section-header"><div class="section-title">Major Indices</div><div class="section-line"></div></div>
+  <div class="indices-grid" id="indices-grid"></div>
+  <div class="section-header"><div class="section-title">Market Hours · World Clock</div><div class="section-line"></div></div>
+  <div class="clocks-grid" id="clocks-grid"></div>
+</main>
+<footer>
+  <div class="footer-note">MarketPulse · crowdstrke.in · Powered by Twelve Data</div>
+  <div class="footer-disclaimer">Data delayed 15–20 min on free plan. Not financial advice. For informational purposes only.</div>
+</footer>
+</div>
+
+<script>
+const API_KEY = 'c47710a901e544a7ab6322df249b37e1';
+const REFRESH_INTERVAL = 30;
+
+const INDICES = [
+  { symbol:'SPX',    name:'S&P 500',         exchange:'NYSE',     country:'US', flag:'🇺🇸', tz:'America/New_York',  open:[9,30],  close:[16,0]  },
+  { symbol:'IXIC',   name:'NASDAQ Composite', exchange:'NASDAQ',   country:'US', flag:'🇺🇸', tz:'America/New_York',  open:[9,30],  close:[16,0]  },
+  { symbol:'DJI',    name:'Dow Jones',        exchange:'NYSE',     country:'US', flag:'🇺🇸', tz:'America/New_York',  open:[9,30],  close:[16,0]  },
+  { symbol:'FTSE',   name:'FTSE 100',         exchange:'LSE',      country:'GB', flag:'🇬🇧', tz:'Europe/London',     open:[8,0],   close:[16,30] },
+  { symbol:'GDAXI',  name:'DAX 40',           exchange:'XETRA',    country:'DE', flag:'🇩🇪', tz:'Europe/Berlin',     open:[9,0],   close:[17,30] },
+  { symbol:'FCHI',   name:'CAC 40',           exchange:'EURONEXT', country:'FR', flag:'🇫🇷', tz:'Europe/Paris',      open:[9,0],   close:[17,30] },
+  { symbol:'N225',   name:'Nikkei 225',       exchange:'TSE',      country:'JP', flag:'🇯🇵', tz:'Asia/Tokyo',        open:[9,0],   close:[15,30] },
+  { symbol:'HSI',    name:'Hang Seng',        exchange:'HKEX',     country:'HK', flag:'🇭🇰', tz:'Asia/Hong_Kong',    open:[9,30],  close:[16,0]  },
+  { symbol:'SENSEX', name:'BSE Sensex',       exchange:'BSE',      country:'IN', flag:'🇮🇳', tz:'Asia/Kolkata',      open:[9,15],  close:[15,30] },
+  { symbol:'NSEI',   name:'Nifty 50',         exchange:'NSE',      country:'IN', flag:'🇮🇳', tz:'Asia/Kolkata',      open:[9,15],  close:[15,30] },
+  { symbol:'AXJO',   name:'ASX 200',          exchange:'ASX',      country:'AU', flag:'🇦🇺', tz:'Australia/Sydney',  open:[10,0],  close:[16,0]  },
+];
+
+const CLOCKS = [
+  {city:'New York',  tz:'America/New_York',  exchange:'NYSE/NASDAQ'},
+  {city:'London',    tz:'Europe/London',      exchange:'LSE'},
+  {city:'Frankfurt', tz:'Europe/Berlin',      exchange:'XETRA'},
+  {city:'Paris',     tz:'Europe/Paris',       exchange:'CAC 40'},
+  {city:'Dubai',     tz:'Asia/Dubai',         exchange:'DFM'},
+  {city:'Mumbai',    tz:'Asia/Kolkata',       exchange:'BSE/NSE'},
+  {city:'Singapore', tz:'Asia/Singapore',     exchange:'SGX'},
+  {city:'Tokyo',     tz:'Asia/Tokyo',         exchange:'TSE'},
+  {city:'Hong Kong', tz:'Asia/Hong_Kong',     exchange:'HKEX'},
+  {city:'Sydney',    tz:'Australia/Sydney',   exchange:'ASX'},
+];
+
+const DEMO = {
+  SPX:{price:5234.18,change:18.42,pct:0.35}, IXIC:{price:16421.67,change:-45.12,pct:-0.27},
+  DJI:{price:38996.39,change:134.21,pct:0.34}, FTSE:{price:8156.23,change:-22.80,pct:-0.28},
+  GDAXI:{price:18492.64,change:87.30,pct:0.47}, FCHI:{price:8025.10,change:31.60,pct:0.39},
+  N225:{price:38908.93,change:-210.45,pct:-0.54}, HSI:{price:17763.03,change:123.11,pct:0.70},
+  SENSEX:{price:73667.96,change:445.82,pct:0.61}, NSEI:{price:22370.35,change:121.40,pct:0.54},
+  AXJO:{price:7865.40,change:-18.20,pct:-0.23},
+};
+
+let priceData={}, sparklineData={}, countdown=REFRESH_INTERVAL;
+
+function isWeekend(d){const day=d.getDay();return day===0||day===6;}
+function getMarketStatus(idx){
+  const now=new Date();
+  const local=new Date(now.toLocaleString('en-US',{timeZone:idx.tz}));
+  if(isWeekend(local))return'closed';
+  const mins=local.getHours()*60+local.getMinutes();
+  const o=idx.open[0]*60+idx.open[1], c=idx.close[0]*60+idx.close[1];
+  if(mins>=o&&mins<c)return'open';
+  if(mins>=(o-60)&&mins<o)return'pre';
+  return'closed';
 }
+
+function genSpark(pct){
+  let v=100,pts=[];
+  for(let i=0;i<20;i++){v+=(Math.random()-0.49)*1.2;pts.push(v);}
+  pts[19]=pts[0]+(pct>0?Math.abs(pct)*2:-Math.abs(pct)*2);
+  return pts;
+}
+
+function drawSparkline(canvas,points,isUp){
+  if(!canvas||!points||points.length<2)return;
+  const ctx=canvas.getContext('2d');
+  const w=canvas.offsetWidth||260, h=canvas.offsetHeight||40;
+  canvas.width=w*2; canvas.height=h*2; ctx.scale(2,2);
+  ctx.clearRect(0,0,w,h);
+  const mn=Math.min(...points), mx=Math.max(...points), rng=mx-mn||1;
+  const color=isUp?'#22c55e':'#ef4444';
+  const xs=points.map((_,i)=>(i/(points.length-1))*w);
+  const ys=points.map(p=>h-((p-mn)/rng)*(h-4)-2);
+  ctx.beginPath(); ctx.moveTo(xs[0],h);
+  xs.forEach((x,i)=>ctx.lineTo(x,ys[i]));
+  ctx.lineTo(xs[xs.length-1],h); ctx.closePath();
+  const g=ctx.createLinearGradient(0,0,0,h);
+  g.addColorStop(0,isUp?'rgba(34,197,94,0.2)':'rgba(239,68,68,0.2)');
+  g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=g; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(xs[0],ys[0]);
+  xs.forEach((x,i)=>ctx.lineTo(x,ys[i]));
+  ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.lineJoin='round'; ctx.stroke();
+}
+
+function fmtP(n){return n?n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';}
+function fmtC(n){if(n==null)return'—';return(n>=0?'+':'')+n.toFixed(2);}
+function fmtPct(n){if(n==null)return'—';return(n>=0?'+':'')+n.toFixed(2)+'%';}
+
+async function fetchPrices(){
+  const syms=INDICES.map(i=>i.symbol).join(',');
+  try{
+    const res=await fetch(`https://api.twelvedata.com/quote?symbol=${syms}&apikey=${API_KEY}`);
+    const data=await res.json();
+    let gotData=false;
+    INDICES.forEach(idx=>{
+      const q=data[idx.symbol];
+      if(q&&q.close){
+        const p=parseFloat(q.close),pv=parseFloat(q.previous_close),ch=p-pv;
+        priceData[idx.symbol]={price:p,change:ch,pct:(ch/pv)*100};
+        gotData=true;
+      }
+    });
+    if(!gotData) loadDemo();
+    else fetchSparklines();
+  }catch(e){
+    loadDemo();
+  }
+}
+
+function loadDemo(){
+  INDICES.forEach(i=>{
+    priceData[i.symbol]=DEMO[i.symbol];
+    sparklineData[i.symbol]=genSpark(DEMO[i.symbol]?.pct||0);
+  });
+  renderAll();
+}
+
+async function fetchSparklines(){
+  const syms=INDICES.map(i=>i.symbol).join(',');
+  try{
+    const res=await fetch(`https://api.twelvedata.com/time_series?symbol=${syms}&interval=30min&outputsize=20&apikey=${API_KEY}`);
+    const data=await res.json();
+    INDICES.forEach(idx=>{
+      const s=data[idx.symbol];
+      sparklineData[idx.symbol]=s&&s.values?s.values.slice().reverse().map(v=>parseFloat(v.close)):genSpark(priceData[idx.symbol]?.pct||0);
+    });
+  }catch(e){
+    INDICES.forEach(i=>{sparklineData[i.symbol]=genSpark(priceData[i.symbol]?.pct||0);});
+  }
+  renderAll();
+}
+
+function renderIndices(){
+  const grid=document.getElementById('indices-grid'); grid.innerHTML='';
+  INDICES.forEach((idx,i)=>{
+    const d=priceData[idx.symbol], status=getMarketStatus(idx), isUp=d?d.pct>=0:true;
+    const card=document.createElement('div');
+    card.className=`index-card ${isUp?'up':'dn'} fade-in`;
+    card.style.animationDelay=`${i*40}ms`;
+    card.innerHTML=`
+      <div class="card-top">
+        <div><div class="card-name">${idx.flag} ${idx.name}</div><div class="card-exchange">${idx.exchange} · ${idx.country}</div></div>
+        <div class="card-status ${status}">${{open:'Open',closed:'Closed',pre:'Pre-mkt'}[status]}</div>
+      </div>
+      <div class="card-price-row">
+        <div class="card-price" id="price-${idx.symbol}">${d?fmtP(d.price):'<span class="skeleton" style="width:120px;height:26px;"></span>'}</div>
+        <div class="card-change">
+          <div class="card-change-val">${d?fmtC(d.change):''}</div>
+          <div class="card-change-pct">${d?fmtPct(d.pct):''}</div>
+        </div>
+      </div>
+      <div class="sparkline-wrap"><canvas id="spark-${idx.symbol}"></canvas></div>
+      <div class="card-footer"><span id="tz-${idx.symbol}">—</span><span>${d?'just now':'loading...'}</span></div>`;
+    grid.appendChild(card);
+    requestAnimationFrame(()=>drawSparkline(document.getElementById(`spark-${idx.symbol}`),sparklineData[idx.symbol]||[],isUp));
+  });
+  updateCardTimes();
+}
+
+function updateCardTimes(){
+  const now=new Date();
+  INDICES.forEach(idx=>{
+    const el=document.getElementById(`tz-${idx.symbol}`);
+    if(el)el.textContent=now.toLocaleTimeString('en-US',{timeZone:idx.tz,hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+  });
+}
+
+function renderStats(){
+  const vals=Object.values(priceData); if(!vals.length)return;
+  document.getElementById('stat-open').textContent=INDICES.filter(i=>getMarketStatus(i)==='open').length;
+  document.getElementById('stat-gainers').textContent=vals.filter(d=>d.pct>=0).length;
+  document.getElementById('stat-decliners').textContent=vals.filter(d=>d.pct<0).length;
+  const sorted=INDICES.filter(i=>priceData[i.symbol]).sort((a,b)=>priceData[b.symbol].pct-priceData[a.symbol].pct);
+  if(sorted.length){
+    const b=sorted[0],w=sorted[sorted.length-1];
+    document.getElementById('stat-best').textContent=b.name;
+    document.getElementById('stat-best-pct').textContent=fmtPct(priceData[b.symbol].pct);
+    document.getElementById('stat-worst').textContent=w.name;
+    document.getElementById('stat-worst-pct').textContent=fmtPct(priceData[w.symbol].pct);
+  }
+}
+
+function renderTicker(){
+  const track=document.getElementById('ticker-track');
+  track.innerHTML=[...INDICES,...INDICES].map(idx=>{
+    const d=priceData[idx.symbol]||DEMO[idx.symbol]||{};
+    const dir=(d.pct||0)>=0?'up':'dn';
+    return`<div class="ticker-item"><span class="ticker-name">${idx.flag} ${idx.symbol}</span><span class="ticker-price">${fmtP(d.price)}</span><span class="ticker-change ${dir}">${fmtPct(d.pct)}</span></div>`;
+  }).join('');
+}
+
+function renderClocks(){
+  const grid=document.getElementById('clocks-grid');
+  if(!grid.childElementCount){
+    CLOCKS.forEach(c=>{
+      const cell=document.createElement('div'); cell.className='clock-cell';
+      const id=c.city.replace(/\s/g,'_');
+      cell.innerHTML=`<div class="clock-city">${c.city}</div><div class="clock-time" id="ct-${id}">--:--</div><div class="clock-date" id="cd-${id}">--</div><div class="clock-open closed" id="co-${id}">${c.exchange}</div>`;
+      grid.appendChild(cell);
+    });
+  }
+  const now=new Date();
+  CLOCKS.forEach(c=>{
+    const id=c.city.replace(/\s/g,'_');
+    const te=document.getElementById(`ct-${id}`),de=document.getElementById(`cd-${id}`),oe=document.getElementById(`co-${id}`);
+    if(!te)return;
+    te.textContent=now.toLocaleTimeString('en-US',{timeZone:c.tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    de.textContent=now.toLocaleDateString('en-US',{timeZone:c.tz,weekday:'short',month:'short',day:'numeric'});
+    const ri=INDICES.find(i=>i.tz===c.tz);
+    if(ri){const s=getMarketStatus(ri);oe.className=`clock-open ${s==='open'?'open':'closed'}`;oe.textContent=s==='open'?'Market Open':c.exchange;}
+  });
+}
+
+function renderAll(){
+  renderTicker(); renderStats(); renderIndices(); renderClocks();
+  document.getElementById('last-updated').textContent='Updated '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+setInterval(()=>{
+  renderClocks(); updateCardTimes();
+  countdown--;
+  document.getElementById('countdown').textContent=countdown;
+  if(countdown<=0){countdown=REFRESH_INTERVAL;fetchPrices();}
+},1000);
+
+(async()=>{renderIndices();renderClocks();await fetchPrices();})();
+</script>
+</body>
+</html>
