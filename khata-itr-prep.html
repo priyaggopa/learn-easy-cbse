@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khata — ITR Prep Assistant</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --paper:#F7F3EA;
+    --paper-dark:#EFE8D8;
+    --ink:#1C2B3A;
+    --ink-soft:#4B5A6A;
+    --ledger-line:#D8CBAE;
+    --accent:#B5502C;
+    --accent-soft:#E8D9C8;
+    --good:#2F6B4F;
+    --good-soft:#DFEDE4;
+    --bad:#A83232;
+    --mono: ui-monospace, "SF Mono", Consolas, "Courier New", monospace;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.5; }
+  .wrap{max-width:960px;margin:0 auto;padding:32px 24px 80px;}
+  header.top{ border-bottom:3px double var(--ink); padding-bottom:18px; margin-bottom:28px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px; }
+  header.top h1{ font-family:var(--serif); font-size:30px; margin:0; letter-spacing:0.3px; }
+  header.top .sub{color:var(--ink-soft); font-size:13px; max-width:440px;}
+  header.top .stamp{ font-family:var(--mono); font-size:11px; color:var(--accent); border:1.5px solid var(--accent); padding:4px 10px; border-radius:2px; transform:rotate(-2deg); white-space:nowrap; }
+  .notice{ background:var(--accent-soft); border-left:4px solid var(--accent); padding:12px 16px; font-size:13.5px; margin-bottom:28px; border-radius:2px; }
+  .notice b{color:var(--accent);}
+  section.card{ background:#FFFDF8; border:1px solid var(--ledger-line); border-radius:3px; padding:22px 24px; margin-bottom:22px; position:relative; }
+  section.card::before{ content:attr(data-step); position:absolute; top:-14px; left:20px; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:11px; padding:3px 9px; border-radius:2px; letter-spacing:1px; }
+  h2{font-family:var(--serif); font-size:19px; margin:6px 0 4px;}
+  h3.sub-h{font-size:13.5px; margin:0 0 2px; color:var(--ink); border-top:1px solid var(--ledger-line); padding-top:16px; margin-top:18px;}
+  h3.sub-h:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .subnote{font-size:11.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .desc{color:var(--ink-soft); font-size:13px; margin-bottom:16px;}
+  .drop{ border:2px dashed var(--ledger-line); border-radius:4px; padding:22px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s; font-size:13.5px; color:var(--ink-soft); }
+  .drop:hover{border-color:var(--accent); background:var(--accent-soft);}
+  .drop input{display:none;}
+  .filelist{margin-top:10px; font-size:12.5px; font-family:var(--mono);}
+  .filelist div{padding:3px 0; display:flex; justify-content:space-between; border-bottom:1px dotted var(--ledger-line);}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+  .grid4{display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px;}
+  @media (max-width:640px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}}
+  label{display:block; font-size:12px; color:var(--ink-soft); margin-bottom:4px; margin-top:10px;}
+  label .cap{color:var(--accent); font-family:var(--mono); font-size:10.5px;}
+  input[type=text], input[type=number], select{ width:100%; padding:8px 10px; border:1px solid var(--ledger-line); border-radius:2px; font-family:var(--mono); font-size:13.5px; background:#fff; }
+  input:focus, select:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .checkline{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-soft); margin-top:8px;}
+  .btn{ background:var(--ink); color:var(--paper); border:none; padding:10px 18px; border-radius:2px; cursor:pointer; font-size:13.5px; font-family:var(--sans); margin-top:14px; margin-right:8px; }
+  .btn:hover{background:var(--accent);}
+  .btn.secondary{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .btn.secondary:hover{background:var(--ink); color:var(--paper);}
+  .btn.ghost{background:transparent; color:var(--good); border:1.5px solid var(--good); font-size:12px; padding:6px 12px; margin-top:6px;}
+  .btn.ghost:hover{background:var(--good); color:#fff;}
+  table{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:12px;}
+  th,td{padding:6px 8px; text-align:left; border-bottom:1px solid var(--ledger-line);}
+  th{font-family:var(--mono); font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.5px;}
+  td.num, th.num{text-align:right; font-family:var(--mono);}
+  .tag{display:inline-block; font-family:var(--mono); font-size:10.5px; padding:1px 6px; border-radius:2px; background:var(--accent-soft); color:var(--accent);}
+  .status{font-size:12px; margin-top:8px; color:var(--ink-soft);}
+  .status.ok{color:var(--good);} .status.err{color:var(--bad);}
+  .hrabox{background:var(--paper-dark); border:1px solid var(--ledger-line); border-radius:3px; padding:14px 16px; margin-top:8px;}
+  .hraResult{font-family:var(--mono); font-size:13px; margin-top:10px; padding-top:10px; border-top:1px dashed var(--ledger-line);}
+  .ledger{ background:#FFFDF8; border:1px solid var(--ink); padding:0; margin-top:10px; font-family:var(--mono); font-size:13px; }
+  .ledger .ltitle{ text-align:center; padding:14px 10px 10px; font-family:var(--serif); font-size:18px; border-bottom:2px dashed var(--ledger-line); }
+  .ledger .lrow{ display:flex; justify-content:space-between; padding:6px 18px; border-bottom:1px dotted var(--ledger-line); }
+  .ledger .lrow.section{ background:var(--paper-dark); font-weight:bold; border-bottom:none; padding-top:10px; }
+  .ledger .lrow.total{ font-weight:bold; border-top:2px solid var(--ink); border-bottom:none; background:var(--accent-soft); }
+  .ledger .lfoot{ text-align:center; font-size:10.5px; color:var(--ink-soft); padding:10px; border-top:2px dashed var(--ledger-line); }
+  .regime-toggle{display:flex; gap:0; margin-bottom:14px; border:1px solid var(--ink); border-radius:2px; overflow:hidden; width:fit-content;}
+  .regime-toggle div{padding:7px 16px; cursor:pointer; font-size:12.5px; font-family:var(--mono);}
+  .regime-toggle div.active{background:var(--ink); color:var(--paper);}
+  .winner{color:var(--good); font-weight:bold;}
+  footer{margin-top:40px; font-size:11.5px; color:var(--ink-soft); text-align:center; border-top:1px solid var(--ledger-line); padding-top:16px;}
+  .flag{background:#fff3d6; border:1px solid #d9a441; color:#7a5200; padding:8px 12px; font-size:12px; border-radius:2px; margin-top:10px;}
+  .opt-row{display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px dotted var(--ledger-line); font-size:13px;}
+  .opt-row .name{font-weight:600;}
+  .opt-row .note{color:var(--ink-soft); font-size:11.5px;}
+  .opt-row .save{color:var(--good); font-family:var(--mono); font-weight:bold;}
+  .opt-total{background:var(--good-soft); border:1px solid var(--good); border-radius:3px; padding:12px 16px; margin-top:12px; font-size:14px; display:flex; justify-content:space-between; align-items:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>Khata</h1>
+      <div class="sub">Pulls your Form 16 and Groww capital-gains figures into one ITR-ready summary, covers the full set of exemptions and deductions, and shows you where you're leaving tax savings on the table.</div>
+    </div>
+    <div class="stamp">AY 2026-27 · FY 2025-26</div>
+  </header>
+
+  <div class="notice">
+    <b>How this works:</b> Nothing you upload leaves your browser — all parsing happens on your device, and no files are stored anywhere. Extraction is best-effort: PDF layouts vary, so <b>check every field below before relying on it</b>, especially against your Form 26AS / AIS on the tax portal.
+  </div>
+
+  <!-- STEP 1: FORM 16 -->
+  <section class="card" data-step="Step 1">
+    <h2>Form 16(s)</h2>
+    <div class="desc">Upload one Form 16 per employer (if you switched jobs this year, add both). PDF only.</div>
+    <div class="drop" id="drop16">
+      <input type="file" id="file16" accept="application/pdf" multiple>
+      Click or drop Form 16 PDF(s) here
+    </div>
+    <div class="filelist" id="list16"></div>
+    <div class="status" id="status16"></div>
+    <div id="debug16Wrap" style="display:none; margin-top:10px;">
+      <button class="btn secondary" id="showDebug16Btn" style="margin-top:0;">Show raw extracted text (to help fix parsing)</button>
+      <div class="subnote" style="margin-top:6px;">This stays on your screen only. If you want help fixing the parser, copy just the line(s) with labels like "Gross Salary" / "tax deducted" — replace the actual numbers with X's before pasting anywhere, since real figures aren't needed for that.</div>
+      <pre id="debug16Text" style="display:none; max-height:220px; overflow:auto; background:var(--paper-dark); border:1px solid var(--ledger-line); padding:12px; font-size:11px; white-space:pre-wrap; margin-top:8px;"></pre>
+    </div>
+  </section>
+
+  <!-- STEP 2: GROWW -->
+  <section class="card" data-step="Step 2">
+    <h2>Groww capital gains statement</h2>
+    <div class="desc">Groww → Profile → Reports → Capital Gains (Stocks / Mutual Funds), downloaded as Excel (.xlsx). Upload one or both.</div>
+    <div class="drop" id="dropGroww">
+      <input type="file" id="fileGroww" accept=".xlsx,.xls,.csv" multiple>
+      Click or drop Groww .xlsx statement(s) here
+    </div>
+    <div class="filelist" id="listGroww"></div>
+    <div class="status" id="statusGroww"></div>
+    <div id="cgTableWrap" style="display:none;">
+      <table id="cgTable"><thead><tr><th>Security</th><th>Buy date</th><th>Sell date</th><th class="num">Qty</th><th class="num">Gain/Loss (₹)</th><th>Term</th></tr></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+  <!-- STEP 3: REVIEW -->
+  <section class="card" data-step="Step 3">
+    <h2>Review, exemptions &amp; deductions</h2>
+    <div class="desc">Confirm what was extracted, and fill in every exemption/deduction that applies to you — the more complete this is, the more accurate the optimizer below will be.</div>
+
+    <h3 class="sub-h">Personal</h3>
+    <div class="grid4">
+      <div><label>Full name</label><input type="text" id="pName"></div>
+      <div><label>PAN</label><input type="text" id="pPAN" placeholder="ABCDE1234F"></div>
+      <div><label>Your age bracket</label>
+        <select id="pAge">
+          <option value="below60">Below 60</option>
+          <option value="60to80">60–80 (Senior)</option>
+          <option value="above80">Above 80 (Super senior)</option>
+        </select>
+      </div>
+      <div><label>Parents covered under health cover?</label>
+        <select id="pParentsSenior">
+          <option value="no">No parents insured</option>
+          <option value="nonsenior">Yes, below 60</option>
+          <option value="senior">Yes, 60 or above</option>
+        </select>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Salary income (from Form 16, auto-summed if multiple)</h3>
+    <div class="grid3">
+      <div><label>Gross salary (₹)</label><input type="number" id="sGross" value="0"></div>
+      <div><label>Exemptions u/s 10 already in Form 16 (LTA, etc.) (₹)</label><input type="number" id="sExempt" value="0"></div>
+      <div><label>TDS deducted on salary (₹)</label><input type="number" id="sTDS" value="0"></div>
+    </div>
+
+    <h3 class="sub-h">HRA exemption calculator <span class="subnote" style="font-family:var(--sans);">— old regime only, Sec 10(13A)</span></h3>
+    <div class="hrabox">
+      <div class="grid4">
+        <div><label>Basic + DA (annual, ₹)</label><input type="number" id="hraBasic" value="0"></div>
+        <div><label>HRA received (annual, ₹)</label><input type="number" id="hraReceived" value="0"></div>
+        <div><label>Rent paid (annual, ₹)</label><input type="number" id="hraRent" value="0"></div>
+        <div><label>City type</label>
+          <select id="hraMetro"><option value="metro">Metro (Delhi/Mumbai/Kolkata/Chennai)</option><option value="nonmetro">Non-metro</option></select>
+        </div>
+      </div>
+      <div class="checkline"><input type="checkbox" id="hraAlreadyIncluded"><label style="margin:0;" for="hraAlreadyIncluded">This HRA exemption is already counted in "Exemptions u/s 10" above (don't double-count)</label></div>
+      <div class="hraResult" id="hraResult">Exemption = least of: HRA received / rent paid − 10% of basic / 50% (metro) or 40% (non-metro) of basic → <b id="hraOut">₹0</b></div>
+    </div>
+
+    <h3 class="sub-h">Capital gains (from Groww, editable)</h3>
+    <div class="grid2">
+      <div><label>Short-term capital gains — equity, 111A (₹)</label><input type="number" id="cgSTCG" value="0"></div>
+      <div><label>Long-term capital gains — equity, 112A (₹)</label><input type="number" id="cgLTCG" value="0"></div>
+    </div>
+
+    <h3 class="sub-h">Other income</h3>
+    <div class="grid3">
+      <div><label>Interest / other income (₹)</label><input type="number" id="oOther" value="0"></div>
+      <div><label>Advance tax / self-assessment tax already paid (₹)</label><input type="number" id="oAdvTax" value="0"></div>
+    </div>
+
+    <h3 class="sub-h">Chapter VI-A deductions <span class="subnote" style="font-family:var(--sans);">— old regime only, unless marked otherwise</span></h3>
+    <div class="grid3">
+      <div><label>80C — PPF, ELSS, LIC, principal repayment… <span class="cap">cap ₹1,50,000</span></label><input type="number" id="d80C" value="0"></div>
+      <div><label>80CCD(1B) — additional NPS (self) <span class="cap">cap ₹50,000</span></label><input type="number" id="d80CCD1B" value="0"></div>
+      <div><label>80CCD(2) — employer's NPS contribution <span class="cap">allowed in both regimes</span></label><input type="number" id="d80CCD2" value="0"></div>
+      <div><label>80D — health insurance, self &amp; family <span class="cap" id="cap80DSelf">cap ₹25,000</span></label><input type="number" id="d80DSelf" value="0"></div>
+      <div><label>80D — health insurance, parents <span class="cap" id="cap80DParents">cap ₹0</span></label><input type="number" id="d80DParents" value="0"></div>
+      <div><label>80TTA/80TTB — savings account interest <span class="cap" id="capTTA">cap ₹10,000</span></label><input type="number" id="d80TTA" value="0"></div>
+      <div><label>24(b) — home loan interest (self-occupied) <span class="cap">cap ₹2,00,000</span></label><input type="number" id="d24b" value="0"></div>
+      <div><label>80EEA — additional affordable-housing interest <span class="cap">cap ₹1,50,000</span></label><input type="number" id="d80EEA" value="0"></div>
+      <div><label>80E — education loan interest <span class="cap">no cap</span></label><input type="number" id="d80E" value="0"></div>
+      <div><label>80G — donations (eligible amount, after % limits) <span class="cap">no fixed cap</span></label><input type="number" id="d80G" value="0"></div>
+      <div><label>Professional tax paid <span class="cap">typically ≤ ₹2,500</span></label><input type="number" id="dProfTax" value="0"></div>
+    </div>
+
+    <button class="btn" id="computeBtn">Compute tax &amp; find savings →</button>
+  </section>
+
+  <!-- STEP 4: RESULT -->
+  <section class="card" data-step="Step 4" id="resultCard" style="display:none;">
+    <h2>Your ITR summary</h2>
+    <div class="desc">Compare both regimes, see what more you could save, then export. ITR-2 applies here since you have capital gains (ITR-1 doesn't allow it).</div>
+
+    <div class="regime-toggle">
+      <div id="toggleNew" class="active">New regime</div>
+      <div id="toggleOld">Old regime</div>
+    </div>
+
+    <div id="ledgerHolder"></div>
+    <div id="regimeSuggestion" class="flag" style="display:none;"></div>
+
+    <h3 class="sub-h" style="margin-top:24px;">Where you could still save <span class="subnote" style="font-family:var(--sans);">(old regime — unused headroom in what you've entered)</span></h3>
+    <div id="optimizerHolder"></div>
+
+    <div style="margin-top:18px;">
+      <button class="btn" id="exportJsonBtn">Download JSON (for offline utility / your CA)</button>
+      <button class="btn secondary" id="exportCsvBtn">Download plain summary (.csv)</button>
+    </div>
+  </section>
+
+  <footer>
+    Estimates only, based on FY 2025-26 slab rates and deduction limits as generally published — not a substitute for the pre-filled JSON on the e-Filing portal or a CA's review. Always cross-check against your Form 26AS / AIS before filing. This tool does not connect to, log into, or submit anything to incometax.gov.in.
+  </footer>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+// ---------- state ----------
+let form16Files = [];
+let growwFiles = [];
+let cgTransactions = [];
+let aggregatedSTCG = 0, aggregatedLTCG = 0;
+let aggregatedGross = 0, aggregatedExempt = 0, aggregatedTDS = 0;
+let lastExtractedTexts = []; // {filename, text} — for the debug panel only, never sent anywhere
+
+function fmt(n){ n = Math.round(n||0); return "₹" + n.toLocaleString("en-IN"); }
+function num(id){ return parseFloat(document.getElementById(id).value) || 0; }
+
+// ---------- caps that depend on age selections ----------
+function update80DCaps(){
+  const age = document.getElementById('pAge').value;
+  const parents = document.getElementById('pParentsSenior').value;
+  const selfCap = age === 'below60' ? 25000 : 50000;
+  let parentsCap = 0;
+  if(parents === 'nonsenior') parentsCap = 25000;
+  if(parents === 'senior') parentsCap = 50000;
+  document.getElementById('cap80DSelf').textContent = `cap ₹${selfCap.toLocaleString('en-IN')}`;
+  document.getElementById('cap80DParents').textContent = `cap ₹${parentsCap.toLocaleString('en-IN')}`;
+  const ttaCap = age === 'below60' ? 10000 : 50000;
+  document.getElementById('capTTA').textContent = age === 'below60' ? 'cap ₹10,000 (80TTA)' : 'cap ₹50,000 (80TTB)';
+  return {selfCap, parentsCap, ttaCap};
+}
+document.getElementById('pAge').addEventListener('change', update80DCaps);
+document.getElementById('pParentsSenior').addEventListener('change', update80DCaps);
+update80DCaps();
+
+// ---------- HRA calculator ----------
+function computeHRA(){
+  const basic = num('hraBasic'), received = num('hraReceived'), rent = num('hraRent');
+  const metro = document.getElementById('hraMetro').value === 'metro';
+  const rentMinus10 = Math.max(0, rent - 0.10*basic);
+  const pctBasic = basic * (metro ? 0.50 : 0.40);
+  const exemption = Math.max(0, Math.min(received, rentMinus10, pctBasic));
+  document.getElementById('hraOut').textContent = fmt(exemption);
+  return exemption;
+}
+['hraBasic','hraReceived','hraRent','hraMetro'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', computeHRA);
+  document.getElementById(id).addEventListener('change', computeHRA);
+});
+computeHRA();
+
+// ---------- FORM 16 UPLOAD ----------
+const drop16 = document.getElementById('drop16');
+const file16input = document.getElementById('file16');
+drop16.addEventListener('click', ()=>file16input.click());
+file16input.addEventListener('change', e=>handleForm16Files(e.target.files));
+drop16.addEventListener('dragover', e=>{e.preventDefault();});
+drop16.addEventListener('drop', e=>{e.preventDefault(); handleForm16Files(e.dataTransfer.files);});
+
+async function handleForm16Files(fileList){
+  const statusEl = document.getElementById('status16');
+  statusEl.textContent = "Reading PDF(s)…"; statusEl.className = "status";
+  for(const f of fileList){
+    form16Files.push(f);
+    try{
+      const text = await extractPdfText(f);
+      lastExtractedTexts.push({filename:f.name, text});
+      const parsed = parseForm16(text);
+      aggregatedGross += parsed.gross;
+      aggregatedExempt += parsed.exempt;
+      aggregatedTDS += parsed.tds;
+      if(parsed.name && !document.getElementById('pName').value) document.getElementById('pName').value = parsed.name;
+      if(parsed.pan && !document.getElementById('pPAN').value) document.getElementById('pPAN').value = parsed.pan;
+      if(parsed.gross === 0 && parsed.tds === 0){
+        statusEl.textContent = f.name + " opened, but no recognizable Form 16 figures were found — enter them manually below.";
+        statusEl.className = "status err";
+        document.getElementById('debug16Wrap').style.display = 'block';
+      }
+    }catch(err){
+      console.error(err);
+      if(err && err.name === 'PasswordSkipped'){
+        statusEl.textContent = f.name + " needs a password — skipped. Re-upload it and enter the password when prompted, or enter its figures manually below.";
+      } else if(err && err.name === 'PasswordException'){
+        statusEl.textContent = "Wrong password for " + f.name + " — try uploading it again.";
+      } else {
+        statusEl.textContent = "Couldn't fully parse " + f.name + " — enter its figures manually below.";
+      }
+      statusEl.className = "status err";
+    }
+  }
+  document.getElementById('sGross').value = aggregatedGross;
+  document.getElementById('sExempt').value = aggregatedExempt;
+  document.getElementById('sTDS').value = aggregatedTDS;
+  renderFileList('list16', form16Files);
+  if(!statusEl.classList.contains('err')){
+    statusEl.textContent = form16Files.length + " Form 16(s) processed. Figures below are best-effort — please verify.";
+    statusEl.className = "status ok";
+  }
+}
+
+// Reads a PDF's text, prompting locally in-browser for a password if it's protected.
+// The password never leaves this browser tab — it's only used by pdf.js to open the file in memory.
+async function extractPdfText(file){
+  let attemptPassword = undefined;
+  for(let attempt=0; attempt<3; attempt++){
+    const buf = await file.arrayBuffer(); // re-read fresh each attempt; pdf.js detaches the buffer
+    try{
+      const loadingTask = pdfjsLib.getDocument(
+        attemptPassword !== undefined ? {data:buf, password:attemptPassword} : {data:buf}
+      );
+      const pdf = await loadingTask.promise;
+      let text = "";
+      for(let i=1;i<=pdf.numPages;i++){
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        text += reconstructLinesByPosition(content.items) + "\n";
+      }
+      return text;
+    }catch(err){
+      const isPasswordError = err && (err.name === 'PasswordException' || /password/i.test(err.message||""));
+      if(!isPasswordError) throw err;
+      const isRetry = attemptPassword !== undefined;
+      const entered = window.prompt(
+        (isRetry ? "That password didn't work. " : "") +
+        `"${file.name}" is password-protected. Many Form 16s use PAN (all caps) or date of birth (DDMMYYYY) as the password.\n\nEnter password (stays in your browser only):`
+      );
+      if(entered === null || entered === ""){
+        const skipErr = new Error("User skipped password prompt");
+        skipErr.name = "PasswordSkipped";
+        throw skipErr;
+      }
+      attemptPassword = entered;
+    }
+  }
+  const failErr = new Error("Too many failed password attempts");
+  failErr.name = "PasswordException";
+  throw failErr;
+}
+
+// pdf.js returns text items in internal stream order, which often does NOT match visual
+// reading order in tables (labels and their values can end up far apart in the raw string).
+// This reconstructs actual visual lines using each item's on-page x/y position instead.
+function reconstructLinesByPosition(items){
+  const rows = []; // {y, cells:[{x,str}]}
+  items.forEach(it=>{
+    if(!it.str || !it.str.trim()) return;
+    const y = it.transform[5];
+    const x = it.transform[4];
+    let row = rows.find(r => Math.abs(r.y - y) <= 2.5);
+    if(!row){ row = {y, cells:[]}; rows.push(row); }
+    row.cells.push({x, str: it.str});
+  });
+  rows.sort((a,b)=> b.y - a.y); // top of page first
+  return rows.map(r=>{
+    r.cells.sort((a,b)=>a.x-b.x);
+    return r.cells.map(c=>c.str).join(" ").replace(/\s+/g," ").trim();
+  }).join("\n");
+}
+
+function parseForm16(text){
+  const clean = text.replace(/,(?=[0-9])/g,""); // strip thousands separators but not other commas
+  const grab = (patterns)=>{
+    for(const p of patterns){ const m = clean.match(p); if(m) return parseFloat(m[1]); }
+    return null;
+  };
+
+  // Part A's "Total (Rs.)" row is TRACES-generated and standardized across every employer:
+  // Quarter | Amount paid/credited | Amount of tax deducted | Amount of tax deposited/remitted
+  let gross = null, tds = null;
+  const partATotal = clean.match(/Total\s*\(Rs\.?\)\s*([0-9]+(?:\.[0-9]+)?)\s+([0-9]+(?:\.[0-9]+)?)\s+([0-9]+(?:\.[0-9]+)?)/);
+  if(partATotal){
+    gross = parseFloat(partATotal[1]);
+    tds = parseFloat(partATotal[2]);
+  }
+
+  // Fallbacks if Part A's summary row wasn't found or didn't look right (e.g. a different table matched)
+  if(gross === null){
+    gross = grab([
+      /Salary as per provisions contained in section 17\(1\)\s*([0-9]+(?:\.[0-9]+)?)/,
+      /Gross [Ss]alary[\s\S]{0,60}?([0-9]+(?:\.[0-9]+)?)/
+    ]) || 0;
+  }
+  if(tds === null){
+    tds = grab([
+      /Total amount of tax deducted[\s\S]{0,60}?([0-9]+(?:\.[0-9]+)?)/,
+      /Tax deducted from salary[^:]*:\s*([0-9]+(?:\.[0-9]+)?)/
+    ]) || 0;
+  }
+
+  const exempt = grab([
+    /Total amount of exemption claimed under section 10[\s\S]{0,80}?([0-9]+(?:\.[0-9]+)?)\s*$/m,
+    /Total amount of exemption claimed under section 10[\s\S]{0,80}?([0-9]+(?:\.[0-9]+)?)/,
+    /Less:? [Aa]llowances exempt[\s\S]{0,60}?([0-9]+(?:\.[0-9]+)?)/
+  ]) || 0;
+
+  let name = "";
+  const nameM = clean.match(/Name and address of the Employee\/?[^\n]*\n\s*([A-Z][A-Za-z .]{3,50})/) ||
+                clean.match(/Employee[’']?s Name[:\s]+([A-Za-z .]{3,40})/);
+  if(nameM) name = nameM[1].trim();
+
+  let pan = "";
+  const panM = clean.match(/PAN of the Employee[^A-Z0-9]{0,30}([A-Z]{5}[0-9]{4}[A-Z])/) || clean.match(/\b([A-Z]{5}[0-9]{4}[A-Z])\b/);
+  if(panM) pan = panM[1];
+
+  return {gross, exempt, tds, name, pan};
+}
+
+function renderFileList(elId, files){
+  const el = document.getElementById(elId);
+  el.innerHTML = "";
+  files.forEach(f=>{
+    const div = document.createElement('div');
+    div.innerHTML = `<span>${f.name} <span class="tag">${(f.size/1024).toFixed(0)}kb</span></span>`;
+    el.appendChild(div);
+  });
+}
+
+document.getElementById('showDebug16Btn').addEventListener('click', ()=>{
+  const pre = document.getElementById('debug16Text');
+  const visible = pre.style.display === 'block';
+  if(visible){ pre.style.display = 'none'; return; }
+  pre.textContent = lastExtractedTexts.map(t=>`----- ${t.filename} -----\n${t.text}`).join("\n\n");
+  pre.style.display = 'block';
+});
+
+// ---------- GROWW UPLOAD ----------
+const dropGroww = document.getElementById('dropGroww');
+const fileGrowwInput = document.getElementById('fileGroww');
+dropGroww.addEventListener('click', ()=>fileGrowwInput.click());
+fileGrowwInput.addEventListener('change', e=>handleGrowwFiles(e.target.files));
+dropGroww.addEventListener('dragover', e=>e.preventDefault());
+dropGroww.addEventListener('drop', e=>{e.preventDefault(); handleGrowwFiles(e.dataTransfer.files);});
+
+async function handleGrowwFiles(fileList){
+  const statusEl = document.getElementById('statusGroww');
+  statusEl.textContent = "Reading statement(s)…"; statusEl.className = "status";
+  for(const f of fileList){
+    growwFiles.push(f);
+    try{
+      const buf = await f.arrayBuffer();
+      const wb = XLSX.read(buf, {type:'array', cellDates:true});
+      for(const sheetName of wb.SheetNames){
+        const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], {header:1, raw:false});
+        parseGrowwSheet(rows);
+      }
+    }catch(err){
+      console.error(err);
+      statusEl.textContent = "Couldn't parse " + f.name + " — the column layout may differ from what's expected. You can still enter totals manually above.";
+      statusEl.className = "status err";
+    }
+  }
+  renderFileList('listGroww', growwFiles);
+  document.getElementById('cgSTCG').value = aggregatedSTCG.toFixed(0);
+  document.getElementById('cgLTCG').value = aggregatedLTCG.toFixed(0);
+  renderCgTable();
+  if(!statusEl.classList.contains('err')){
+    statusEl.textContent = cgTransactions.length + " transaction rows found across " + growwFiles.length + " file(s). STCG: " + fmt(aggregatedSTCG) + " · LTCG: " + fmt(aggregatedLTCG);
+    statusEl.className = "status ok";
+  }
+}
+
+function parseGrowwSheet(rows){
+  if(!rows || rows.length < 2) return;
+  let headerIdx = -1, headerMap = {};
+  const keywordSets = {
+    security: ['stock','symbol','scrip','company','security','isin','fund name','scheme name'],
+    buyDate: ['buy date','purchase date','date of purchase'],
+    sellDate: ['sell date','sale date','date of sale','redemption date'],
+    qty: ['quantity','qty','units'],
+    gain: ['realized gain','realised gain','profit','gain/loss','p&l','capital gain'],
+    term: ['term','stcg/ltcg','period of holding','type']
+  };
+  for(let i=0;i<Math.min(rows.length,15);i++){
+    const row = (rows[i]||[]).map(c=>String(c||"").toLowerCase().trim());
+    let hits = 0; const map = {};
+    row.forEach((cell,ci)=>{
+      for(const key in keywordSets){
+        if(keywordSets[key].some(kw=>cell.includes(kw))){
+          if(!(key in map)){ map[key]=ci; hits++; }
+        }
+      }
+    });
+    if(hits >= 2){ headerIdx = i; headerMap = map; break; }
+  }
+  if(headerIdx === -1) return;
+
+  for(let r=headerIdx+1;r<rows.length;r++){
+    const row = rows[r];
+    if(!row || row.every(c=>c===undefined || c==="")) continue;
+    const security = headerMap.security!==undefined ? row[headerMap.security] : "";
+    let gain = headerMap.gain!==undefined ? parseFloat(String(row[headerMap.gain]).replace(/,/g,"")) : NaN;
+    if(isNaN(gain)) continue;
+    const qty = headerMap.qty!==undefined ? row[headerMap.qty] : "";
+    const buyDate = headerMap.buyDate!==undefined ? row[headerMap.buyDate] : "";
+    const sellDate = headerMap.sellDate!==undefined ? row[headerMap.sellDate] : "";
+    let term = headerMap.term!==undefined ? String(row[headerMap.term]||"").toUpperCase() : "";
+    if(!term.includes("LT") && !term.includes("ST")){
+      const bd = new Date(buyDate), sd = new Date(sellDate);
+      if(!isNaN(bd) && !isNaN(sd)){
+        const days = (sd-bd)/(1000*3600*24);
+        term = days > 365 ? "LTCG" : "STCG";
+      } else { term = "STCG"; }
+    } else { term = term.includes("LT") ? "LTCG" : "STCG"; }
+    if(term === "LTCG") aggregatedLTCG += gain; else aggregatedSTCG += gain;
+    cgTransactions.push({security, buyDate, sellDate, qty, gain, term});
+  }
+}
+
+function renderCgTable(){
+  if(cgTransactions.length === 0) return;
+  document.getElementById('cgTableWrap').style.display = 'block';
+  const tbody = document.querySelector('#cgTable tbody');
+  tbody.innerHTML = "";
+  cgTransactions.slice(0,200).forEach(t=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${t.security||''}</td><td>${t.buyDate||''}</td><td>${t.sellDate||''}</td>
+      <td class="num">${t.qty||''}</td><td class="num">${fmt(t.gain)}</td><td><span class="tag">${t.term}</span></td>`;
+    tbody.appendChild(tr);
+  });
+  if(cgTransactions.length > 200){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="6" style="color:var(--ink-soft);">…and ${cgTransactions.length-200} more rows (all included in totals)</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+// ---------- DEDUCTION CAPS ----------
+const CAPS = { c80C:150000, c80CCD1B:50000, c24b:200000, c80EEA:150000, profTax:2500 };
+
+function capDeductions(raw){
+  const dCaps = update80DCaps();
+  return {
+    d80C: Math.min(raw.d80C, CAPS.c80C),
+    d80CCD1B: Math.min(raw.d80CCD1B, CAPS.c80CCD1B),
+    d80CCD2: raw.d80CCD2, // no simple flat cap enforced here — depends on salary %, left to user
+    d80DSelf: Math.min(raw.d80DSelf, dCaps.selfCap),
+    d80DParents: Math.min(raw.d80DParents, dCaps.parentsCap),
+    d80TTA: Math.min(raw.d80TTA, dCaps.ttaCap),
+    d24b: Math.min(raw.d24b, CAPS.c24b),
+    d80EEA: Math.min(raw.d80EEA, CAPS.c80EEA),
+    d80E: raw.d80E,
+    d80G: raw.d80G,
+    dProfTax: Math.min(raw.dProfTax, CAPS.profTax),
+    caps: dCaps
+  };
+}
+
+function readRawDeductions(){
+  return {
+    d80C: num('d80C'), d80CCD1B: num('d80CCD1B'), d80CCD2: num('d80CCD2'),
+    d80DSelf: num('d80DSelf'), d80DParents: num('d80DParents'), d80TTA: num('d80TTA'),
+    d24b: num('d24b'), d80EEA: num('d80EEA'), d80E: num('d80E'), d80G: num('d80G'),
+    dProfTax: num('dProfTax')
+  };
+}
+
+function sumOldDeductions(d){
+  return d.d80C + d.d80CCD1B + d.d80DSelf + d.d80DParents + d.d80TTA + d.d24b + d.d80EEA + d.d80E + d.d80G;
+}
+
+// ---------- TAX COMPUTATION ----------
+function slabTax(income, slabs){
+  let tax = 0, last = 0;
+  for(const [limit, rate] of slabs){
+    if(income > last){ tax += (Math.min(income,limit)-last) * rate; last = limit; } else break;
+  }
+  return tax;
+}
+
+function computeNewRegime(salaryTaxable, otherIncome, stcg, ltcg){
+  const slabs = [[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]];
+  const normalIncome = Math.max(0, salaryTaxable + otherIncome);
+  let normalTax = slabTax(normalIncome, slabs);
+  const ltcgTaxable = Math.max(0, ltcg - 125000);
+  const stcgTax = stcg * 0.20;
+  const ltcgTax = ltcgTaxable * 0.125;
+  const totalIncome = normalIncome + stcg + ltcg;
+  let rebate = 0;
+  if(totalIncome <= 1200000){ rebate = Math.min(normalTax, 60000); }
+  const taxBeforeCess = Math.max(0, normalTax - rebate) + stcgTax + ltcgTax;
+  const cess = taxBeforeCess * 0.04;
+  return {normalIncome, normalTax, stcgTax, ltcgTax, ltcgTaxable, rebate, taxBeforeCess, cess, total: taxBeforeCess+cess, totalIncome};
+}
+
+function computeOldRegime(salaryTaxable, otherIncome, stcg, ltcg, deductionTotal){
+  const slabs = [[250000,0],[500000,0.05],[1000000,0.20],[Infinity,0.30]];
+  const normalIncome = Math.max(0, salaryTaxable + otherIncome - deductionTotal);
+  let normalTax = slabTax(normalIncome, slabs);
+  const ltcgTaxable = Math.max(0, ltcg - 125000);
+  const stcgTax = stcg * 0.20;
+  const ltcgTax = ltcgTaxable * 0.125;
+  const totalIncome = normalIncome + stcg + ltcg;
+  let rebate = 0;
+  if(totalIncome <= 500000){ rebate = Math.min(normalTax, 12500); }
+  const taxBeforeCess = Math.max(0, normalTax - rebate) + stcgTax + ltcgTax;
+  const cess = taxBeforeCess * 0.04;
+  return {normalIncome, normalTax, stcgTax, ltcgTax, ltcgTaxable, rebate, taxBeforeCess, cess, total: taxBeforeCess+cess, totalIncome};
+}
+
+let lastComputation = null;
+let activeRegime = 'new';
+
+document.getElementById('computeBtn').addEventListener('click', runCompute);
+
+function runCompute(){
+  const gross = num('sGross'), tds = num('sTDS');
+  const hraExemption = document.getElementById('hraAlreadyIncluded').checked ? 0 : computeHRA();
+  const exempt = num('sExempt') + hraExemption;
+  const stcg = num('cgSTCG'), ltcg = num('cgLTCG');
+  const other = num('oOther');
+  const advTax = num('oAdvTax');
+
+  const raw = readRawDeductions();
+  const capped = capDeductions(raw);
+  const oldDeductionTotal = sumOldDeductions(capped) ; // 80CCD2 handled separately (both regimes)
+
+  const stdDedNew = 75000, stdDedOld = 50000;
+  const salaryTaxableNew = Math.max(0, gross - exempt - stdDedNew - capped.d80CCD2);
+  const salaryTaxableOld = Math.max(0, gross - exempt - stdDedOld - capped.dProfTax - capped.d80CCD2);
+
+  const newR = computeNewRegime(salaryTaxableNew, other, stcg, ltcg);
+  const oldR = computeOldRegime(salaryTaxableOld, other, stcg, ltcg, oldDeductionTotal);
+
+  lastComputation = {
+    personal:{name:document.getElementById('pName').value, pan:document.getElementById('pPAN').value, age:document.getElementById('pAge').value},
+    inputs:{gross, exempt, tds, stcg, ltcg, other, advTax, hraExemption},
+    deductions: capped,
+    oldDeductionTotal,
+    newR, oldR, paidTotal: tds+advTax
+  };
+
+  renderResult();
+  renderOptimizer();
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+document.getElementById('toggleNew').addEventListener('click', ()=>{activeRegime='new'; renderResult();});
+document.getElementById('toggleOld').addEventListener('click', ()=>{activeRegime='old'; renderResult();});
+
+function renderResult(){
+  if(!lastComputation) return;
+  document.getElementById('toggleNew').classList.toggle('active', activeRegime==='new');
+  document.getElementById('toggleOld').classList.toggle('active', activeRegime==='old');
+  const R = activeRegime==='new' ? lastComputation.newR : lastComputation.oldR;
+  const paid = lastComputation.paidTotal;
+  const balance = R.total - paid;
+
+  const rows = [
+    {t:'section', l:'Income'},
+    {l:'Salary (after exemptions & standard deduction)', v: R.normalIncome - lastComputation.inputs.other + (activeRegime==='old'?lastComputation.oldDeductionTotal:0)},
+    {l:'Other income', v: lastComputation.inputs.other},
+    ...(activeRegime==='old' ? [{l:'Less: Chapter VI-A deductions', v: -lastComputation.oldDeductionTotal}] : []),
+    {l:'Short-term capital gains (111A)', v: lastComputation.inputs.stcg},
+    {l:'Long-term capital gains (112A)', v: lastComputation.inputs.ltcg},
+    {t:'section', l:'Tax computation'},
+    {l:'Tax on normal-slab income', v: R.normalTax},
+    {l:'Less: Rebate u/s 87A', v: -R.rebate},
+    {l:'Tax on STCG @ 20%', v: R.stcgTax},
+    {l:'Tax on LTCG @ 12.5% (after ₹1.25L exemption)', v: R.ltcgTax},
+    {l:'Health & Education Cess @ 4%', v: R.cess},
+    {t:'total', l:'Total tax liability', v: R.total},
+    {t:'section', l:'Already paid'},
+    {l:'TDS (Form 16)', v: lastComputation.inputs.tds},
+    {l:'Advance / self-assessment tax', v: lastComputation.inputs.advTax},
+    {t:'total', l: balance >= 0 ? 'Balance tax payable' : 'Refund due', v: Math.abs(balance)},
+  ];
+
+  let html = `<div class="ledger"><div class="ltitle">${activeRegime==='new'?'New':'Old'} Regime — Computation</div>`;
+  rows.forEach(r=>{
+    if(r.t==='section'){ html += `<div class="lrow section"><span>${r.l}</span><span></span></div>`; }
+    else if(r.t==='total'){ html += `<div class="lrow total"><span>${r.l}</span><span>${fmt(r.v)}</span></div>`; }
+    else { html += `<div class="lrow"><span>${r.l}</span><span>${r.v<0?'−':''}${fmt(Math.abs(r.v))}</span></div>`; }
+  });
+  html += `<div class="lfoot">PAN ${lastComputation.personal.pan||'—'} · AY 2026-27 · Suggested form: ITR-2</div></div>`;
+  document.getElementById('ledgerHolder').innerHTML = html;
+
+  const diff = lastComputation.oldR.total - lastComputation.newR.total;
+  const suggestEl = document.getElementById('regimeSuggestion');
+  suggestEl.style.display = 'block';
+  if(Math.abs(diff) < 100){
+    suggestEl.textContent = "Both regimes land at roughly the same tax. Worth a manual double check if your deductions change year to year.";
+  } else if(diff > 0){
+    suggestEl.innerHTML = `Based on what you've entered, the <span class="winner">new regime</span> saves you about ${fmt(diff)} vs. old regime.`;
+  } else {
+    suggestEl.innerHTML = `Based on what you've entered, the <span class="winner">old regime</span> saves you about ${fmt(-diff)} vs. new regime — mainly from your Chapter VI-A deductions.`;
+  }
+}
+
+// ---------- OPTIMIZER: headroom in old-regime deductions ----------
+function renderOptimizer(){
+  const d = lastComputation.deductions;
+  const opportunities = [
+    {key:'80C', label:'Section 80C (PPF / ELSS / LIC / EPF…)', current:d.d80C, cap:CAPS.c80C},
+    {key:'80CCD(1B)', label:'NPS — additional self-contribution', current:d.d80CCD1B, cap:CAPS.c80CCD1B},
+    {key:'80D-self', label:'Health insurance — self & family', current:d.d80DSelf, cap:d.caps.selfCap},
+    {key:'80D-parents', label:'Health insurance — parents', current:d.d80DParents, cap:d.caps.parentsCap},
+    {key:'80TTA/B', label:'Savings account interest', current:d.d80TTA, cap:d.caps.ttaCap},
+    {key:'24(b)', label:'Home loan interest (self-occupied)', current:d.d24b, cap:CAPS.c24b},
+    {key:'80EEA', label:'Additional affordable-housing interest', current:d.d80EEA, cap:CAPS.c80EEA},
+  ].filter(o=>o.cap - o.current > 100);
+
+  const holder = document.getElementById('optimizerHolder');
+  if(opportunities.length === 0){
+    holder.innerHTML = `<div class="subnote" style="font-family:var(--sans);">You've maxed out every capped deduction available under the old regime — nothing left on the table here.</div>`;
+    return;
+  }
+
+  // For each opportunity, compute marginal tax saved by adding its full headroom, holding others fixed
+  const base = lastComputation.oldR.total;
+  let html = "";
+  let totalPotentialSaving = 0;
+  const rawTotals = { ...lastComputation.deductions };
+
+  opportunities.forEach(o=>{
+    const headroom = o.cap - o.current;
+    const testDeductionTotal = lastComputation.oldDeductionTotal + headroom;
+    const testR = computeOldRegime(
+      lastComputation.oldR.normalIncome + lastComputation.oldDeductionTotal - lastComputation.inputs.other, // back out to salaryTaxable equivalent
+      lastComputation.inputs.other, lastComputation.inputs.stcg, lastComputation.inputs.ltcg, testDeductionTotal
+    );
+    const saving = Math.max(0, base - testR.total);
+    totalPotentialSaving += saving;
+    html += `<div class="opt-row">
+      <div><div class="name">${o.label}</div><div class="note">₹${o.current.toLocaleString('en-IN')} used of ₹${o.cap.toLocaleString('en-IN')} cap — ₹${headroom.toLocaleString('en-IN')} headroom</div></div>
+      <div class="save">save up to ${fmt(saving)}</div>
+    </div>`;
+  });
+
+  html += `<div class="opt-total"><span>If you maxed out everything above (old regime)</span><span>${fmt(totalPotentialSaving)} more saved</span></div>`;
+  html += `<button class="btn ghost" id="applyMaxBtn">Fill in these fields at their max, so I can see the full picture</button>`;
+  holder.innerHTML = html;
+
+  document.getElementById('applyMaxBtn').addEventListener('click', ()=>{
+    document.getElementById('d80C').value = CAPS.c80C;
+    document.getElementById('d80CCD1B').value = CAPS.c80CCD1B;
+    document.getElementById('d80DSelf').value = d.caps.selfCap;
+    document.getElementById('d80DParents').value = d.caps.parentsCap;
+    document.getElementById('d80TTA').value = d.caps.ttaCap;
+    document.getElementById('d24b').value = CAPS.c24b;
+    document.getElementById('d80EEA').value = CAPS.c80EEA;
+    runCompute();
+    activeRegime = 'old';
+    renderResult();
+  });
+}
+
+// ---------- EXPORTS ----------
+document.getElementById('exportJsonBtn').addEventListener('click', ()=>{
+  if(!lastComputation) return;
+  const payload = {
+    generatedBy: "Khata ITR prep assistant",
+    assessmentYear: "2026-27", financialYear: "2025-26",
+    disclaimer: "Best-effort figures for review before filing. Not an official pre-filled JSON from the Income Tax Department. Verify against Form 26AS / AIS before use.",
+    personalInfo: lastComputation.personal,
+    scheduleS_Salary: { grossSalary: lastComputation.inputs.gross, exemptAllowancesSec10: lastComputation.inputs.exempt, tdsOnSalary: lastComputation.inputs.tds },
+    scheduleCG_CapitalGains: { stcgSection111A: lastComputation.inputs.stcg, ltcgSection112A: lastComputation.inputs.ltcg, transactions: cgTransactions },
+    scheduleOS_OtherSources: { otherIncome: lastComputation.inputs.other },
+    chapterVIA_Deductions: lastComputation.deductions,
+    taxesPaid: { tds: lastComputation.inputs.tds, advanceOrSelfAssessmentTax: lastComputation.inputs.advTax },
+    computation: { newRegime: lastComputation.newR, oldRegime: lastComputation.oldR },
+    suggestedITRForm: "ITR-2"
+  };
+  downloadFile(JSON.stringify(payload, null, 2), "itr_summary.json", "application/json");
+});
+
+document.getElementById('exportCsvBtn').addEventListener('click', ()=>{
+  if(!lastComputation) return;
+  const R_new = lastComputation.newR, R_old = lastComputation.oldR;
+  let csv = "Field,Value\n";
+  const add = (k,v)=>{ csv += `"${k}","${v}"\n`; };
+  add("Name", lastComputation.personal.name);
+  add("PAN", lastComputation.personal.pan);
+  add("Gross Salary", lastComputation.inputs.gross);
+  add("Exemptions u/s 10", lastComputation.inputs.exempt);
+  add("STCG (111A)", lastComputation.inputs.stcg);
+  add("LTCG (112A)", lastComputation.inputs.ltcg);
+  add("Other Income", lastComputation.inputs.other);
+  add("Total Chapter VI-A deductions (old regime)", lastComputation.oldDeductionTotal);
+  add("TDS", lastComputation.inputs.tds);
+  add("New Regime Total Tax", R_new.total.toFixed(0));
+  add("Old Regime Total Tax", R_old.total.toFixed(0));
+  add("Suggested ITR Form", "ITR-2");
+  downloadFile(csv, "itr_summary.csv", "text/csv");
+});
+
+function downloadFile(content, filename, mime){
+  const blob = new Blob([content], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
